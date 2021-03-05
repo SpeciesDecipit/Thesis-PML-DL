@@ -34,5 +34,6 @@ def get_embeddings(labels):
 
 
 def get_train_labels(labels, name2label, name):
-    return [np.mean(values[-1], axis=1) for values in labels.values()], [values[name2label[name]] for values in
-                                                                         labels.values()]
+    return [np.mean(values[-1], axis=1) for values in labels.values()], [
+        values[name2label[name]] for values in labels.values()
+    ]

@@ -6,7 +6,7 @@ from extractor import Extractor
 SHOW_TOP_CONTEXTS = 10
 MAX_PATH_LENGTH = 8
 MAX_PATH_WIDTH = 2
-JAR_PATH = 'JavaExtractor/JPredict/target/JavaExtractor-0.0.1-SNAPSHOT.jar'
+JAR_PATH = '../code2vec/JavaExtractor/JPredict/target/JavaExtractor-0.0.1-SNAPSHOT.jar'
 
 
 class InteractivePredictor:
@@ -29,7 +29,7 @@ class InteractivePredictor:
 
     def predict(self):
         input_folder = self.config.TARGET_SOURCE_CODE
-        for input_filename in glob.glob(f'{input_folder}/*.java'):
+        for input_filename in glob.glob(f'{input_folder}/*.*'):
             predict_lines, hash_to_string_dict = self.path_extractor.extract_paths(input_filename)
             raw_prediction_results = self.model.predict(predict_lines)
             method_prediction_results = common.parse_prediction_results(
