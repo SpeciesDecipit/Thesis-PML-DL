@@ -34,5 +34,5 @@ if __name__ == '__main__':
                 str(eval_results).replace('topk', 'top{}'.format(config.TOP_K_WORDS_CONSIDERED_DURING_PREDICTION)))
     if config.PREDICT:
         predictor = InteractivePredictor(config, model)
-        predictor.predict()
+        predictor.predict(config.TARGET_SOURCE_CODE, config.TARGET_SOURCE_CODE_EMBEDDINGS_OUTPUT)
     model.close_session()

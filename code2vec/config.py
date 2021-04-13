@@ -1,15 +1,16 @@
+import logging
+import os
+import sys
+from argparse import ArgumentParser
 from math import ceil
 from typing import Optional
-import logging
-from argparse import ArgumentParser
-import sys
-import os
 
 
 class Config:
     @classmethod
     def arguments_parser(cls) -> ArgumentParser:
         parser = ArgumentParser()
+        parser.add_argument('run')
         parser.add_argument(
             "-d", "--data", dest="data_path", help="path to preprocessed dataset", required=False
         )
@@ -176,6 +177,13 @@ class Config:
         self.TARGET_SOURCE_CODE = args.target_source_code
         self.TARGET_SOURCE_CODE_EMBEDDINGS_OUTPUT = args.target_source_code_embeddings_output
 
+        if not self.MODEL_LOAD_PATH:
+            self.MODEL_LOAD_PATH = '../code2vec/models/java14_model/saved_model_iter8.release'
+        if not self.PREDICT:
+            self.PREDICT = True
+        if not self.EXPORT_CODE_VECTORS:
+            self.EXPORT_CODE_VECTORS = True
+
     def __init__(
         self, set_defaults: bool = False, load_from_args: bool = False, verify: bool = False
     ):
@@ -218,8 +226,8 @@ class Config:
         self.LOGS_PATH: Optional[str] = None
         self.DL_FRAMEWORK: str = ''  # in {'keras', 'tensorflow'}
         self.USE_TENSORBOARD: bool = False
-        self.TARGET_SOURCE_CODE: str = 'Input.java'
-        self.TARGET_SOURCE_CODE_EMBEDDINGS_OUTPUT: str = 'vectors.txt'
+        self.TARGET_SOURCE_CODE: str = ''
+        self.TARGET_SOURCE_CODE_EMBEDDINGS_OUTPUT: str = ''
 
         # Automatically filled by `Code2VecModelBase._init_num_of_examples()`.
         self.NUM_TRAIN_EXAMPLES: int = 0
