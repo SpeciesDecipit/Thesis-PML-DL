@@ -11,6 +11,7 @@ class Config:
     def arguments_parser(cls) -> ArgumentParser:
         parser = ArgumentParser()
         parser.add_argument('run')
+        parser.add_argument('--host')
         parser.add_argument(
             "-d", "--data", dest="data_path", help="path to preprocessed dataset", required=False
         )
