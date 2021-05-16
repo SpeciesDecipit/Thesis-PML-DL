@@ -1,14 +1,18 @@
 import os
+import pathlib
 from collections import defaultdict
 
 import numpy as np
 
 
-def get_antipattern_dict(embedding_dir):
+def get_antipattern_dict(
+    embedding_dir, ignore_dirs=[pathlib.Path('./embeddings/negative_samples')]
+):
     antipatterns = list(embedding_dir.glob('*'))
     antipatterns_dict = {}
     for antipattern in antipatterns:
-        antipatterns_dict[antipattern.name] = list(antipattern.glob('*'))
+        if antipattern not in ignore_dirs:
+            antipatterns_dict[antipattern.name] = list(antipattern.glob('*'))
     return antipatterns_dict
 
 
@@ -37,4 +41,3 @@ def get_train_labels(labels, name2label, name):
     return [np.mean(values[-1], axis=1) for values in labels.values()], [
         values[name2label[name]] for values in labels.values()
     ]
-
