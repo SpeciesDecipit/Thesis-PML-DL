@@ -3,23 +3,24 @@ from torch import nn
 
 
 class PredictionHead(nn.Module):
-    def __init__(self, embedding_dim, conv_out_dim, lstm_hidden, n_labels, filter_size=3, drop_rate_conv=0.3,
-                 drop_rate_lstm=0.5):
+    def __init__(
+        self,
+        embedding_dim,
+        conv_out_dim,
+        lstm_hidden,
+        n_labels,
+        filter_size=3,
+        drop_rate_conv=0.3,
+        drop_rate_lstm=0.5,
+    ):
         super(PredictionHead, self).__init__()
         self.conv = nn.Sequential(
-            nn.Conv1d(embedding_dim,
-                      conv_out_dim,
-                      filter_size,
-                      padding=filter_size // 2
-                      ),
+            nn.Conv1d(embedding_dim, conv_out_dim, filter_size, padding=filter_size // 2),
             nn.ReLU(),
-            nn.Dropout(drop_rate_conv)
+            nn.Dropout(drop_rate_conv),
         )
         self.biLSTM = nn.LSTM(
-            input_size=conv_out_dim,
-            hidden_size=lstm_hidden,
-            bidirectional=True,
-            batch_first=True
+            input_size=conv_out_dim, hidden_size=lstm_hidden, bidirectional=True, batch_first=True
         )
         self.out = nn.Linear(2 * lstm_hidden, n_labels)
         self.dropout = nn.Dropout(drop_rate_lstm)
