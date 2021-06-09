@@ -12,6 +12,13 @@ class Config:
         parser = ArgumentParser()
         parser.add_argument('run')
         parser.add_argument('--host')
+        parser.add_argument('--workers')
+        parser.add_argument('--bind')
+        parser.add_argument('--timeout')
+        parser.add_argument('--unix:app.sock')
+        parser.add_argument('-m')
+        parser.add_argument('--007')
+        parser.add_argument('--wsgi:app')
         parser.add_argument(
             "-d", "--data", dest="data_path", help="path to preprocessed dataset", required=False
         )
@@ -78,7 +85,7 @@ class Config:
             '--release',
             action='store_true',
             help='if specified and loading a trained model, release the loaded model for a lower model '
-            'size.',
+                 'size.',
         )
         parser.add_argument(
             '--predict', action='store_true', help='execute the interactive prediction shell'
@@ -186,7 +193,7 @@ class Config:
             self.EXPORT_CODE_VECTORS = True
 
     def __init__(
-        self, set_defaults: bool = False, load_from_args: bool = False, verify: bool = False
+            self, set_defaults: bool = False, load_from_args: bool = False, verify: bool = False
     ):
         self.NUM_TRAIN_EPOCHS: int = 0
         self.SAVE_EVERY_EPOCHS: int = 0

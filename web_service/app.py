@@ -1,5 +1,7 @@
 import sys
 
+from flask_cors import cross_origin
+
 sys.path.insert(0, '../code2vec')
 
 import os
@@ -12,7 +14,7 @@ from flask import Flask, jsonify, request
 from code2vec import load_model_dynamically
 from config import Config
 from interactive_predict import InteractivePredictor
-from web_service.model import PredictionHead
+from model import PredictionHead
 
 
 app = Flask(__name__)
@@ -42,7 +44,8 @@ def get_embedding(filename):
     ).unsqueeze(0)
 
 
-@app.route('/predict', methods=['POST'])
+@app.route('/predict', methods=['POST', 'OPTIONS'])
+@cross_origin()
 def predict():
     if request.method == 'POST':
         file = request.files['file']
@@ -55,8 +58,22 @@ def predict():
         probabilities = [
             torch.sigmoid(value).cpu().data.numpy().tolist() for value in model.forward(embedding)
         ][0]
+
+        os.path.exists(f'../code2vec/input/{file.filename}') and os.remove(
+            f'../code2vec/input/{file.filename}'
+        )
+        os.path.exists(f'../code2vec/output/{file.filename.split(".")[0]}.txt') and os.remove(
+            f'../code2vec/output/{file.filename.split(".")[0]}.txt'
+        )
+
         return jsonify({label2name[index]: value for index, value in enumerate(probabilities)})
 
 
+@app.route('/test', methods=['GET', 'OPTIONS'])
+@cross_origin()
+def test():
+    return jsonify('Hi, there!')
+
+
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
