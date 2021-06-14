@@ -27,7 +27,6 @@ config = Config(set_defaults=True, load_from_args=True, verify=True)
 code2vec_model = load_model_dynamically(config)
 predictor = InteractivePredictor(config, code2vec_model)
 config.log('Done creating code2vec model')
-# predictor.predict()
 
 
 label2name = {

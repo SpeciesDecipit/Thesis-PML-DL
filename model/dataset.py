@@ -1,6 +1,6 @@
+import numpy as np
 import torch
 from torch.utils.data import Dataset
-import numpy as np
 
 
 class EmbeddingDataset(Dataset):
@@ -22,6 +22,6 @@ def collate_fn(batch):
     sequence_padded = torch.zeros([len(batch), emb_dim, max_sequence_len])
     ys = []
     for i, (X, y) in enumerate(batch):
-        sequence_padded[i, :, :X.shape[-1]] = X
+        sequence_padded[i, :, : X.shape[-1]] = X
         ys.append(y)
     return sequence_padded, torch.Tensor(ys)

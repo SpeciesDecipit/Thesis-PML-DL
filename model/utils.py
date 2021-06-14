@@ -6,7 +6,7 @@ import numpy as np
 
 
 def get_antipattern_dict(
-    embedding_dir, ignore_dirs=[pathlib.Path('./embeddings/negative_samples')]
+    embedding_dir, ignore_dirs=[pathlib.Path('./embeddings/c_plus_plus/negative_samples')]
 ):
     antipatterns = list(embedding_dir.glob('*'))
     antipatterns_dict = {}
@@ -35,9 +35,3 @@ def get_embeddings(labels):
     for name, values in labels.items():
         labels[name].append(get_embedding(values[-1]).reshape(384, -1))
     return labels
-
-
-def get_train_labels(labels, name2label, name):
-    return [np.mean(values[-1], axis=1) for values in labels.values()], [
-        values[name2label[name]] for values in labels.values()
-    ]
